@@ -2,15 +2,19 @@ package com.api.client.core;
 
 import com.api.client.constants.ApiConstants;
 import com.api.client.exception.ApiError;
+import com.api.client.exception.ApiException;
 import com.api.client.security.AuthenticationInterceptor;
 import okhttp3.Dispatcher;
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
 import org.apache.commons.lang3.StringUtils;
+import retrofit2.Call;
 import retrofit2.Converter;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
+import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.concurrent.TimeUnit;
 
@@ -65,7 +69,37 @@ public class ApiServiceGenerator {
         return retrofit.create(serviceClass);
     }
 
+    /**
+     * synchronized execute request
+     * @param <T>
+     * @return
+     */
+    public static <T> T executeSync(Call<T> call){
+        try {
+            Response<T> response = call.execute();
+            if (response.isSuccessful()) {
+                return response.body();
+            } else {
+                ApiError apiError = getApiError(response);
+                throw new ApiException(apiError);
+            }
+        } catch (IOException e) {
+            throw new ApiException(e);
+        }
+    }
 
+    /**
+     * Extracts and converts the response error body into an object.
+     */
+    public static ApiError getApiError(Response<?> response) throws IOException, ApiException {
+        return errorBodyConverter.convert(response.errorBody());
+    }
 
+    /**
+     * Returns the shared OkHttpClient instance.
+     */
+    public static OkHttpClient getSharedClient() {
+        return sharedClient;
+    }
 
 }
