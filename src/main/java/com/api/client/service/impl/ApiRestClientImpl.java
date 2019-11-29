@@ -1,7 +1,7 @@
 package com.api.client.service.impl;
 
 import com.api.client.R;
-import com.api.client.service.ApiRestClientService;
+import com.api.client.service.ApiRestClient;
 import com.api.client.service.ApiService;
 
 import static com.api.client.core.ApiServiceGenerator.*;
@@ -10,7 +10,7 @@ import static com.api.client.core.ApiServiceGenerator.*;
  * @author datao
  * @date: 2019/11/26 14:59
  */
-public class ApiRestClientServiceImpl implements ApiRestClientService {
+public class ApiRestClientImpl implements ApiRestClient {
 
     private String key;
 
@@ -18,11 +18,11 @@ public class ApiRestClientServiceImpl implements ApiRestClientService {
 
     private ApiService apiService;
 
-    public ApiRestClientServiceImpl(){
+    public ApiRestClientImpl(){
         apiService = createService(ApiService.class);
     }
 
-    public ApiRestClientServiceImpl(String key, String secret){
+    public ApiRestClientImpl(String key, String secret){
         apiService = createService(ApiService.class, key, secret);
     }
 

@@ -7,7 +7,7 @@ import com.api.client.R;
  * @author datao
  * @date: 2019/11/26 14:54
  */
-public interface ApiRestClientService {
+public interface ApiRestClient {
 
     R<String> test(String p, String o);
 }

@@ -8,7 +8,7 @@ import com.api.client.R;
  * @author datao
  * @date: 2019/11/26 14:55
  */
-public interface ApiAsyncRestClientService {
+public interface ApiAsyncRestClient {
 
     void test(String p, String o, CallBackAdapter<R<String>> callback);
 }

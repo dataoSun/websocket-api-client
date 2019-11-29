@@ -2,12 +2,14 @@ package com.api.client;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 
 /**
  * @author datao
  * @date: 2019/11/26 14:20
  */
 @Builder
+@Data
 @AllArgsConstructor
 public class R<T> {
 

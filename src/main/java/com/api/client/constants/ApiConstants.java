@@ -3,22 +3,21 @@ package com.api.client.constants;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
- * @author datao
  * @date: 2019/11/26 14:53
  */
 public class ApiConstants {
 
     /**
-     * api base url
+     * Api base url
      */
-    public static final String API_BASE_URL = "";
+    public static final String API_BASE_URL = "http://127.0.0.1:8080/";
 
     /**
      * HTTP Header to be used for API-KEY authentication.
      */
-    public static final String API_KEY_HEADER = "HAORONG_APIKEY";
+    public static final String API_KEY_HEADER = "APIKEY";
 
-    public static final String API_SIGN_HEADER = "HAORONG_SIGNATURE";
+    public static final String API_SIGN_HEADER = "SIGNATURE";
 
     /**
      * Decorator to indicate that an endpoint requires an API key.

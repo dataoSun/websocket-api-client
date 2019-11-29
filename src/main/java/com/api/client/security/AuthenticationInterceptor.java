@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.Objects;
 
 /**
+ * TODO Extension: Set the timeliness of signed data
  * A request interceptor that injects the API Key Header into requests, and signs messages, whenever required.
  * @date: 2019/11/26 16:08
  */
