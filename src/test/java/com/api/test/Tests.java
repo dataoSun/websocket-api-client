@@ -2,7 +2,6 @@ package com.api.test;
 
 import com.api.client.R;
 import com.api.client.core.ApiClientFactory;
-import com.api.client.core.ApiServiceGenerator;
 import com.api.client.service.ApiRestClient;
 import org.junit.Test;
 /**

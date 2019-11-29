@@ -14,7 +14,10 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.lang.annotation.Annotation;
 import java.util.concurrent.TimeUnit;
 
@@ -80,7 +83,19 @@ public class ApiServiceGenerator {
             if (response.isSuccessful()) {
                 return response.body();
             } else {
-                ApiError apiError = getApiError(response);
+                ApiError apiError = null;
+                try {
+                    apiError = getApiError(response);
+                }catch (Exception e){
+                    ResponseBody body = response.errorBody();
+                    BufferedReader reader = new BufferedReader(body.charStream());
+                    StringBuilder sb = new StringBuilder();
+                    String s = null;
+                    if ((s = reader.readLine()) != null){
+                        sb.append(s);
+                    }
+                    throw new ApiException(sb.toString());
+                }
                 throw new ApiException(apiError);
             }
         } catch (IOException e) {

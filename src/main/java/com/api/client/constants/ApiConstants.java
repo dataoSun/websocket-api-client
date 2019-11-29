@@ -13,6 +13,11 @@ public class ApiConstants {
     public static final String API_BASE_URL = "http://127.0.0.1:8080/";
 
     /**
+     * WebSocket base url
+     */
+    public static final String WEB_SOCKET_URL = "wss://";
+
+    /**
      * HTTP Header to be used for API-KEY authentication.
      */
     public static final String API_KEY_HEADER = "APIKEY";

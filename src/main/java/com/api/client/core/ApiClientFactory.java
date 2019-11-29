@@ -2,10 +2,13 @@ package com.api.client.core;
 
 import com.api.client.service.ApiAsyncRestClient;
 import com.api.client.service.ApiRestClient;
+import com.api.client.service.ApiWebSocketClient;
 import com.api.client.service.impl.ApiAsyncRestClientImpl;
 import com.api.client.service.impl.ApiRestClientImpl;
+import com.api.client.service.impl.ApiWebSocketClientImpl;
 import lombok.Getter;
 import lombok.Setter;
+import static com.api.client.core.ApiServiceGenerator.getSharedClient;
 
 /**
  * @author datao
@@ -65,6 +68,13 @@ public class ApiClientFactory {
         return new ApiAsyncRestClientImpl(apiKey, secret);
     }
 
+    /**
+     * Instantiates a new ApiWebSocketClient
+     * @return
+     */
+    public ApiWebSocketClient newApiWebSocketClient(){
+        return new ApiWebSocketClientImpl(getSharedClient());
+    }
 
 
 
