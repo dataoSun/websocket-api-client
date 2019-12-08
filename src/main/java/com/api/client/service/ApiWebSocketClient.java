@@ -18,5 +18,5 @@ public interface ApiWebSocketClient {
      * @param callback
      * @return
      */
-    Closeable test(String channel, ApiCallback<R<String>> callback);
+    Closeable test(String channel, ApiCallback<R> callback);
 }
