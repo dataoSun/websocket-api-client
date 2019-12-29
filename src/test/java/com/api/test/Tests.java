@@ -31,33 +31,48 @@ public class Tests {
     @Test
     public void test2(){
 
-
-
+        Map<String, Object> queryParams = new HashMap<>();
+        queryParams.put("wd", "中国");
+        String ret = excute(null, "/s", "GET", null, queryParams, null);
+        System.out.println(ret);
     }
 
-    public <T> T excute(Class<T> tClass, String path, String method, Map<String, Object> headerParams, Map<String, Object> queryParams, Map<String, Object> formParams){
+    public static final String baseUrl = "https://www.baidu.com/";
+
+    public <T> T excute(Class<T> retClassType, String path, String method, Map<String, Object> headerParams, Map<String, Object> queryParams, Map<String, Object> formParams){
         ObjectMapper objectMapper = new ObjectMapper();
         Call call = builderCall(path, method, headerParams, queryParams, formParams);
         StringBuilder ret = new StringBuilder();
         T result = null;
+        Reader reader = null;
         try {
             Response response = call.execute();
             if (response.isSuccessful()){
-                final Reader reader = response.body().charStream();
-                result = objectMapper.readValue(reader, tClass);
-                /*char[] chars = new char[1024*10];
+                reader = response.body().charStream();
+                if (Objects.nonNull(retClassType)){
+                    result = objectMapper.readValue(reader, retClassType);
+                }else {
+                    char[] chars = new char[1024*10];
 
-                while (reader.read(chars) != -1){
-                    ret.append(new String(chars));
-                }*/
+                    while (reader.read(chars) != -1){
+                        ret.append(new String(chars));
+                    }
+                }
+                result = (T) ret.toString();
             }
         } catch (IOException e) {
             e.printStackTrace();
+        }finally {
+            if (Objects.nonNull(reader)){
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return result;
     }
-
-    public static final String baseUrl = "";
 
     private Call builderCall(String path, String method, Map<String, Object> headerParams, Map<String, Object> queryParams, Map<String, Object> formParams){
         OkHttpClient okHttpClient = new OkHttpClient();
@@ -69,12 +84,18 @@ public class Tests {
         final String url = builderUrl(path, queryParams);
         final Request.Builder builder = new Request.Builder();
         Headers headers = builderHeader(method, headerParams);
-        RequestBody body = builderBody(formParams);
+        RequestBody body = builderBody(method, formParams);
         return builder.url(url).headers(headers).method(method, body).build();
     }
 
-    private RequestBody builderBody(Map<String, Object> formParams) {
+    private RequestBody builderBody(String method, Map<String, Object> formParams) {
+        if ("GET".equalsIgnoreCase(method)){
+            return null;
+        }
         FormBody.Builder formBuilder  = new FormBody.Builder();
+        if (Objects.isNull(formParams) || formParams.isEmpty()){
+            return null;
+        }
         for (Map.Entry<String, Object> param : formParams.entrySet()) {
             formBuilder.add(param.getKey(), String.valueOf(param.getValue()));
         }
@@ -86,7 +107,7 @@ public class Tests {
         if ("POST".equalsIgnoreCase(method)){
             headerBuilder.add("Content-Type", "application/x-www-form-urlencoded");
         }
-        if (Objects.nonNull(headerParams) && headerParams.isEmpty()){
+        if (Objects.nonNull(headerParams) && !headerParams.isEmpty()){
             Iterator<Map.Entry<String, Object>> it = headerParams.entrySet().iterator();
             while (it.hasNext()){
                 Map.Entry<String, Object> entry = it.next();
